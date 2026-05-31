@@ -856,7 +856,12 @@ const heatmapSpec = {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": "container",
   "height": 180,
-  "data": {"url": "data/heatmap_long.csv"},
+  "data": {
+  "values": [
+    {"state": "NSW", "dimension": "Access", "score": 75},
+    {"state": "VIC", "dimension": "Access", "score": 78}
+  ]
+}
   "mark": {"type": "rect"},
   "encoding": {
     "x": {"field": "state", "type": "nominal", "title": null, "axis": {"labelAngle": 0}},
@@ -881,7 +886,6 @@ const heatmapSpec = {
   "config": {"background": "transparent", "view": {"stroke": null}, "axis": {"grid": false}}
 };
 vegaEmbed('#dimension_heatmap', heatmapSpec, {actions: false});
-});
 </script>
 </body>
 </html>
