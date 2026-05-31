@@ -881,6 +881,11 @@ const heatmapSpec = {
   "config": {"background": "transparent", "view": {"stroke": null}, "axis": {"grid": false}}
 };
 vegaEmbed('#dimension_heatmap', heatmapSpec, {actions: false});
+window.addEventListener('resize', function() {
+vegaEmbed('#regional_gap', regionalGapSpec, {actions: false});
+vegaEmbed('#income_bar', incomeSpec, {actions: false});
+vegaEmbed('#dimension_heatmap', heatmapSpec, {actions: false});
+});
 </script>
 </body>
 </html>
