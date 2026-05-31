@@ -444,7 +444,7 @@ const mapSpec = {
     {
       "data": {
         "url": "https://raw.githubusercontent.com/tonywr71/GeoJson-Data/master/australian-states.json",
-        "format": {"type": "topojson", "feature": "australian-states"}
+        "format": {"type": "json", "property": "features"}
       },
       "transform": [
         {
@@ -478,18 +478,20 @@ const mapSpec = {
 };
 vegaEmbed('#map_chart', mapSpec, {actions: false});
 
-// ─── 2. STATE BAR — stacked bar using pre-shaped long CSV ─────────────────────
-// Uses: bar mark, color nominal, filter transform, tooltip — Week 7/9 content
-// Long format CSV avoids fold (not taught); stacked bar is in Week 7 examples
+// ─── 2. STATE BAR — line chart per dimension across states ───────────────────
+// Uses: line + point mark, color nominal — Week 9 content
 const stateBarSpec = {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": "container",
   "height": 320,
   "data": {"url": "data/adii_by_state_long.csv"},
-  "mark": {"type": "bar"},
+  "mark": {"type": "line", "point": true, "strokeWidth": 2},
   "encoding": {
-    "x": {"field": "state", "type": "nominal", "title": null, "axis": {"labelAngle": 0}},
-    "y": {"field": "score", "type": "quantitative", "title": "Score"},
+    "x": {"field": "state", "type": "nominal", "title": null,
+          "sort": ["NSW","VIC","QLD","SA","WA","TAS","NT","ACT"],
+          "axis": {"labelAngle": 0}},
+    "y": {"field": "score", "type": "quantitative", "title": "Score",
+          "scale": {"domain": [55, 90]}},
     "color": {
       "field": "dimension",
       "type": "nominal",
@@ -500,17 +502,18 @@ const stateBarSpec = {
       "legend": {"title": "Dimension"}
     },
     "tooltip": [
-      {"field": "state_name", "title": "State"},
+      {"field": "state", "title": "State"},
       {"field": "dimension", "title": "Dimension"},
       {"field": "score", "title": "Score", "format": ".1f"}
     ]
   },
-  "config": {"background": "transparent", "view": {"stroke": null}, "axis": {"grid": false}}
+  "config": {"background": "transparent", "view": {"stroke": null},
+             "axis": {"grid": true, "gridColor": "#e8e3da"}}
 };
 vegaEmbed('#state_bar', stateBarSpec, {actions: false});
 
-// ─── 3. REGIONAL GAP BAR — inline values data ─────────────────────────────────
-// Uses: bar + text layer, inline values, condition test — Week 9 content
+// ─── 3. REGIONAL GAP BAR — inline values data ────────────────────────────────
+// Uses: bar mark, inline values, tooltip — Week 7/9 content
 const regionalGapSpec = {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": "container",
@@ -523,31 +526,23 @@ const regionalGapSpec = {
       {"dimension": "Access",          "gap": 3.1}
     ]
   },
+  "mark": {"type": "bar"},
   "encoding": {
     "y": {"field": "dimension", "type": "nominal", "sort": "-x", "title": null},
-    "x": {"field": "gap", "type": "quantitative", "title": "Points gap (outside capitals vs capital cities)", "scale": {"domain": [0, 10]}}
-  },
-  "layer": [
-    {
-      "mark": {"type": "bar"},
-      "encoding": {
-        "color": {
-          "field": "gap",
-          "type": "quantitative",
-          "scale": {"scheme": "orangered"},
-          "legend": null
-        },
-        "tooltip": [
-          {"field": "dimension", "title": "Dimension"},
-          {"field": "gap", "title": "Gap (points)", "format": ".1f"}
-        ]
-      }
+    "x": {"field": "gap", "type": "quantitative",
+          "title": "Points gap (outside capitals vs capital cities)",
+          "scale": {"domain": [0, 10]}},
+    "color": {
+      "field": "gap",
+      "type": "quantitative",
+      "scale": {"scheme": "orangered"},
+      "legend": null
     },
-    {
-      "mark": {"type": "text", "align": "left", "dx": 4, "fontSize": 12},
-      "encoding": {"text": {"field": "gap", "type": "quantitative", "format": ".1f"}}
-    }
-  ],
+    "tooltip": [
+      {"field": "dimension", "title": "Dimension"},
+      {"field": "gap", "title": "Gap (points)", "format": ".1f"}
+    ]
+  },
   "config": {"background": "transparent", "view": {"stroke": null}, "axis": {"grid": false}}
 };
 vegaEmbed('#regional_gap', regionalGapSpec, {actions: false});
