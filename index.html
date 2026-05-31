@@ -528,7 +528,7 @@ const regionalGapSpec = {
   },
   "mark": {"type": "bar"},
   "encoding": {
-    "y": {"field": "dimension", "type": "nominal", "sort": "-x", "title": null},
+    "y": {"field": "dimension", "type": "nominal", "sort": ["Digital Ability","Overall ADII","Affordability","Access"], "title": null},
     "x": {"field": "gap", "type": "quantitative",
           "title": "Points gap (outside capitals vs capital cities)",
           "scale": {"domain": [0, 10]}},
@@ -771,19 +771,18 @@ const incomeSpec = {
   "data": {"url": "data/adii_by_income.csv"},
   "mark": {"type": "bar"},
   "encoding": {
-    "x": {
-      "field": "income_bracket",
-      "type": "nominal",
-      "title": "Household Income",
-      "sort": null,
-      "axis": {"labelAngle": -25, "labelLimit": 120}
-    },
-    "y": {
-      "field": "adii",
-      "type": "quantitative",
-      "title": "ADII Score",
-      "scale": {"domain": [45, 92]}
-    },
+  "y": {
+  "field": "income_bracket",
+  "type": "nominal",
+  "title": "Household Income",
+  "sort": ["Under $25,000","$25,000–$49,999","$50,000–$74,999","$75,000–$99,999","$100,000–$149,999","$150,000 or more"]
+},
+"x": {
+  "field": "adii",
+  "type": "quantitative",
+  "title": "ADII Score",
+  "scale": {"domain": [45, 92]}
+},
     "color": {
       "field": "adii",
       "type": "quantitative",
